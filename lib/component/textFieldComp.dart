@@ -6,6 +6,8 @@ class TextfieldComp extends StatefulWidget {
   final String? hint;
   final String? label;
   final bool? hide;
+  final TextInputType? keyboardType; // Optional keyboard type
+  final String? Function(String?)? validator; // Optional validator
 
   const TextfieldComp({
     Key? key,
@@ -13,6 +15,8 @@ class TextfieldComp extends StatefulWidget {
     this.hint,
     this.label,
     this.hide,
+    this.keyboardType, // Include keyboardType as optional
+    this.validator, // Validator remains optional
   }) : super(key: key);
 
   @override
@@ -23,10 +27,10 @@ class _TextfieldCompState extends State<TextfieldComp> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 47,
-      child: TextField(
+      child: TextFormField(
         obscureText: widget.hide ?? false,
         controller: widget.controller,
+        keyboardType: widget.keyboardType ?? TextInputType.text,
         decoration: InputDecoration(
           hintText: widget.hint,
           labelText: widget.label,
@@ -46,9 +50,24 @@ class _TextfieldCompState extends State<TextfieldComp> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: Colors.red,
+              width: 1.0,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: Colors.red,
+              width: 1.0,
+            ),
+          ),
           filled: true,
           fillColor: Colors.white70,
         ),
+        validator: widget.validator,
       ),
     );
   }
